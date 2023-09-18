@@ -1,1 +1,16 @@
-<p>post works!</p>
+<h1>{{post?.title}}</h1>
+<div class="container mt-3">
+<img class="img-fluid" src="{{post?.imagePath}}" class="img-responsive"
+width="460" height="300"></div>
+<div class="col-sm-10" >
+<p>{{post?.description}}</p>
+<p>Author: {{post?.author}}</p>
+<p>Date: {{post?.dateCreated}}</p>
+<button>Edit</button>
+<button>Delete</button>
+
+
+<hr>
+<hr>
+</div>
+

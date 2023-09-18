@@ -1,13 +1,5 @@
-<div class="responsive">
-    <h3>Tech Crunch</h3>
-    <img src="https://www.hostinger.ph/tutorials/wp-content/uploads/sites/2/2021/12/techcrunch-website-homepage.png" />
-  
-    <p>TechCrunch is a blog that provides technology and startup news, from the latest developments in Silicon Valley to venture capital funding. The blog’s target audience is technology and business enthusiasts, especially startup founders and investors worldwide.</p>
-  
-    <p>Author: Mild Angelee Navia</p>
-    <p>Date: 18 September 2023</p>
-  
-    <button>edit</button>
-    <button>delete</button>
-  </div>
+<ng-container *ngFor="let post of listOfPosts; let i = index">
+  <app-post [post]="post"></app-post>
+</ng-container>
+<br>
   
