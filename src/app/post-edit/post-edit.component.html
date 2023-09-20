@@ -1,1 +1,36 @@
-<p>post-edit works!</p>
+<h3>Create Post</h3>
+<form>
+    <div class="form-row" style="display: flex;">
+      <div class="col-md-4 mb-3">
+        <label for="validationDefault01">Title</label>
+        <input type="text" class="form-control" id="validationDefault01" placeholder="Title" value="Title" required>
+      </div>&nbsp;
+      <div class="col-md-4 mb-3">
+        <label for="validationDefault02">Image Path</label>
+        <input type="text" class="form-control" id="validationDefault02" placeholder="Image Path" value="Image Path" required>
+      </div>&nbsp;
+    </div>
+    <div class="form-row" style="display: flex;">
+      <div class="col-md-6 mb-3">
+        <label for="validationDefault03">Description</label>
+        <input type="text" class="form-control" id="validationDefault03" placeholder="Description" required>
+      </div>&nbsp;
+      <div class="col-md-3 mb-3">
+        <label for="validationDefault05">Author</label>
+        <input type="text" class="form-control" id="validationDefault05" placeholder="Author" required>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="validationDefault02">Date</label>
+        <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="date"/>
+      </div>&nbsp;
+    </div>
+    <div class="form-group">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+        <label class="form-check-label" for="invalidCheck2">
+          Agree to terms and conditions
+        </label>
+      </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </form>
