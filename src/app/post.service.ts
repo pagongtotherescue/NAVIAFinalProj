@@ -30,4 +30,7 @@ import { Post } from "./post.model";
         updatePost(index: number, post: Post) {
             this.listOfPosts[index] = post;
         }
+        getSpecPost(index: number){
+            return this.listOfPosts[index];
+        }
     }
