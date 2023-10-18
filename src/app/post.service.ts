@@ -9,15 +9,19 @@ import { Post } from "./post.model";
           "https://www.hostinger.ph/tutorials/wp-content/uploads/sites/2/2021/12/techcrunch-website-homepage.png",
           "Tech Crunch is a blog that provides technology and startup news, from the latest developments in Silicon Valley to venture",
           "mild",
-          new Date()
+          new Date(),
+          1,
         ),
         new Post(
           "The Verge",
           "https://www.hostinger.ph/tutorials/wp-content/uploads/sites/2/2021/12/the-verge-website-homepage.png",
           "The Verge is a blog focused on examining how technology will change the future. This blog provides news and opinion",
           "Johnny Bravo",
-          new Date())
-        ]
+          new Date(),
+          1,
+          ),
+    
+        ];
         getPost() {
             return this .listOfPosts;
         }
@@ -32,5 +36,11 @@ import { Post } from "./post.model";
         }
         getSpecPost(index: number){
             return this.listOfPosts[index];
+        }
+        likePost(index: number) {
+            this.listOfPosts[index].numberOfLikes += 1;
+        }
+        addComment(index: number, comment: string) {
+            this.listOfPosts[index].comments.push(comment);
         }
     }

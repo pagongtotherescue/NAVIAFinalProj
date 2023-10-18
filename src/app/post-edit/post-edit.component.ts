@@ -52,7 +52,7 @@ editMode = false;
     const description = this.form.value.description;
 
     const post: Post = new Post(
-      title, imgPath, description, 'mild', new Date()
+      title, imgPath, description, 'mild', new Date(), 1,
     );
 
     if (this.editMode == true) {

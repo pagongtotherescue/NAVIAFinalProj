@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class PostComponent implements OnInit {
   @Input() post?: Post;
   @Input() index: number=0;
+  commentText: any;
   constructor(private postService: PostService, private router: Router ) {
 
    }
@@ -23,5 +24,14 @@ export class PostComponent implements OnInit {
   }
   onEdit(){
     this.router.navigate(['/post-edit', this. index]);
+  }
+  onClick(){
+    this.postService.likePost(this.index);
+  }
+  addComment(commentText: string) {
+    if (commentText.trim() !=='') {
+      this.postService.addComment(this.index, commentText);
+      this.commentText = '';
+    }
   }
 }
