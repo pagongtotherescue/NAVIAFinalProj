@@ -1,30 +1,28 @@
-<h3 *ngIf="editMode==false">Create New Post</h3>
-<h3 *ngIf="editMode==true">Edit Post</h3>
+<h3 *ngIf="editmode==false">Create New Post</h3>
+<h3 *ngIf="editmode==true">Edit Post</h3>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   
-    <div class="form-row" style="display: flex;">
+     <div class="form-row" style="display: flex;">
       <div class="col-md-4 mb-3">
         <label for="validationDefault01">Title</label>
         <input type="text" class="form-control" id="validationDefault01" placeholder="Add title" formControlName='title' required>
-      </div>&nbsp;
+      </div>&nbsp;&nbsp;&nbsp;&nbsp;
       <div class="col-md-4 mb-3">
         <label for="validationDefault02">Image Path</label>
         <input type="text" class="form-control" id="validationDefault02" placeholder="Add image path" formControlName='imgPath' required>
-        <img src="{{form.value.imgPath}}">
+        <img src="{{ form.value.imgPath }}" alt="">
       </div>&nbsp;
     </div>
     <div class="form-row" style="display: flex;">
-      <div class="col-md-6 mb-3">
+      <div class="col-md-9 mb-2">
         <label for="validationDefault03">Description</label>
         <input type="text" class="form-control" id="validationDefault03" placeholder="Add Description" formControlName='description' required>
-      </div>&nbsp;
-      
+      </div>&nbsp;  
     </div>
     <div class="form-group">
-      <div class="form-check">
-        
+      <div class="form-check"> 
       </div>
     </div>
-    <button class="btn btn-primary" type="submit" [disabled]="form.invalid">Save</button>&nbsp;-
+    <button class="btn btn-primary" type="submit">Save </button>-
     <button class="btn btn-danger" type="reset">Clear</button>
   </form>

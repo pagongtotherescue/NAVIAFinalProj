@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PostService } from '../post.service';
 import { Post } from '../post.model';
-import { Params, ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { BackEndService } from '../back-end.service';
 
 @Component({
   selector: 'app-post-edit',
@@ -10,56 +11,52 @@ import { Params, ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./post-edit.component.css']
 })
 export class PostEditComponent implements OnInit {
-form!: FormGroup;
-index: number = 0;
-editMode = false;
-  constructor(private postService: PostService, private router: Router,
-    private actRoute: ActivatedRoute) { }
+  form!: FormGroup;
+  index: number = 0;
+  editmode = false;
+
+  constructor(private postService: PostService, private router: Router, private actRoute: ActivatedRoute, private backEndService: BackEndService) {}
 
   ngOnInit(): void {
-
     let editTitle = '';
-    let editImgPath = '';
     let editDescription = '';
+    let editImgPath = '';
 
     this.actRoute.params.subscribe((params: Params) => {
-      if(params['index']) {
+      if (params['index']) {
         console.log(params['index']);
         this.index = params['index'];
 
-        const editPost = this.postService.getSpecPost(this.index);
+        const post = this.postService.getSpecPost(this.index);
 
-        editTitle = editPost.title;
-        editImgPath = editPost.imagePath;
-        editDescription = editPost.description;
+        editTitle = post.title;
+        editDescription = post.description;
+        editImgPath = post.imagePath;
 
-        this.editMode = true;
-
+        this.editmode = true;
       }
-    }
-  );
+    });
 
     this.form = new FormGroup({
       title: new FormControl(editTitle, [Validators.required]),
       imgPath: new FormControl(editImgPath, [Validators.required]),
       description: new FormControl(editDescription, [Validators.required])
-    })
+    });
   }
 
-  onSubmit(){
+  onSubmit() {
     const title = this.form.value.title;
     const imgPath = this.form.value.imgPath;
-    const description = this.form.value.description;
+    const description = this.form.value.description; // Fixed the typo here
 
-    const post: Post = new Post(
-      title, imgPath, description, 'mild', new Date(), 1,
-    );
+    const post: Post = new Post(title, imgPath, description, 'Mild Angelee Navia', new Date(), 0);
 
-    if (this.editMode == true) {
-      this.postService.updatePost(this.index, post)
-    }
-    else {
+    if (this.editmode == true) {
+      this.postService.updatePost(this.index, post);
+      this.backEndService.saveData();
+    } else {
       this.postService.addPost(post);
+      this.backEndService.saveData();
     }
 
     this.router.navigate(['post-list']);

@@ -1,37 +1,48 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Post } from '../post.model';
-import { PostService } from '../post.service';
+import { PostService } from '../post.service'; 
 import { Router } from '@angular/router';
+import { BackEndService } from '../back-end.service';
+
 
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css']
 })
-export class PostComponent implements OnInit {
+export class PostComponent implements OnInit{
+  @Input() index: number = 0;
   @Input() post?: Post;
-  @Input() index: number=0;
   commentText: any;
-  constructor(private postService: PostService, private router: Router ) {
+  isHovered = false;
+  
+  constructor(private postService: PostService, private router: Router, private backEndService: BackEndService) {
 
    }
 
   ngOnInit(): void {
-    console.log(this.post);
+    console.log(this.post)
   }
   delete(){
     this.postService.deleteButton(this.index);
+    this.backEndService.saveData(); // Save the updated post to the database
   }
+
   onEdit(){
-    this.router.navigate(['/post-edit', this. index]);
+    this.router.navigate(['/post-edit', this.index]);
   }
+
   onClick(){
-    this.postService.likePost(this.index);
+    this.postService.LikePost(this.index);
+    this.backEndService.saveData(); // Save the updated post to the database
   }
-  addComment(commentText: string) {
-    if (commentText.trim() !=='') {
+  
+
+  addComment(commentText: string){
+    if (commentText.trim() !=='') { // check if comment is empty
       this.postService.addComment(this.index, commentText);
       this.commentText = '';
     }
   }
+  
 }

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Post } from './post.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class DataService {
-
-  constructor() { }
+  constructor(private http: HttpClient) {}
 }
