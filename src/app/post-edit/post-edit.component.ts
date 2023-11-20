@@ -45,9 +45,7 @@ export class PostEditComponent implements OnInit {
   }
 
   onSubmit() {
-    const title = this.form.value.title;
-    const imgPath = this.form.value.imgPath;
-    const description = this.form.value.description; // Fixed the typo here
+    const title = this.form.value.title; const imgPath = this.form.value.imgPath; const description = this.form.value.description; 
 
     const post: Post = new Post(title, imgPath, description, 'Mild Angelee Navia', new Date(), 0);
 
@@ -58,7 +56,6 @@ export class PostEditComponent implements OnInit {
       this.postService.addPost(post);
       this.backEndService.saveData();
     }
-
     this.router.navigate(['post-list']);
   }
 }

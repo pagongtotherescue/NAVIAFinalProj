@@ -3,6 +3,7 @@ import { Post } from './post.model';
 
 @Injectable({ providedIn: 'root' })
 export class PostService{
+
   listChangeEvent: EventEmitter<Post[]>  = new EventEmitter();
     listOfPosts: Post[] = [
         // new Post(
@@ -37,21 +38,23 @@ export class PostService{
         deleteButton(index: number){
           this.listOfPosts.splice(index, 1)
         }
-        
         updatePost(index: number, post: Post){
           this.listOfPosts[index] = post;
         }
         getSpecPost(index: number){
         return this.listOfPosts[index];
-}
-LikePost(index: number){
-this.listOfPosts[index].numberOfLikes += 1;
-}
-addComment(index: number, comment: string){
-this.listOfPosts[index].comments.push(comment);
-}
-setPosts(newlistofPost: Post[]) {
-this.listOfPosts = newlistofPost;
-this.listChangeEvent.emit(newlistofPost);
-}
-}
+        }
+          LikePost(index: number){
+          this.listOfPosts[index].numberOfLikes += 1;
+          }
+          addComment(index: number, comment: string){
+            if (!Array.isArray(this.listOfPosts[index].comments)) {
+              this.listOfPosts[index].comments = [];
+            }
+            this.listOfPosts[index].comments.push(comment);
+          }
+            setPosts(newlistofPost: Post[]) {
+            this.listOfPosts = newlistofPost;
+            this.listChangeEvent.emit(newlistofPost);
+            }
+            }

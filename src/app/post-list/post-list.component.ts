@@ -22,8 +22,6 @@ export class PostListComponent implements OnInit {
     });
 
     this.backEndService.fetchData().subscribe((newlistofPost: Post[]) => {
-      // The data has been set in PostService through listChangeEvent
-      // No need to assign it here
     });
   }
 }

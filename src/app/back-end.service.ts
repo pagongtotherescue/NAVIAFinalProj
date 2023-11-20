@@ -17,7 +17,7 @@ export class BackEndService {
   .subscribe({
     next: (res) => {
       console.log(res);
-      this.postService.setPosts(newlistofPost); // Update the local list if save is successful
+      this.postService.setPosts(newlistofPost);
     },
     error: (error) => {
       console.error('Error while saving data:', error);
