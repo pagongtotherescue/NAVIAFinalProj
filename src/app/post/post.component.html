@@ -1,3 +1,7 @@
+<!-- Search Bar -->
+<input [(ngModel)]="searchText" placeholder="Search" (keyup)="search()">
+<button (click)="search()">Search</button>
+<!-- Display Post -->
 <h1>{{post?.title}}</h1>
 <div class="container mt-3">
 <img class="img-fluid" src="{{post?.imagePath}}" class="img-responsive"
@@ -7,16 +11,23 @@ width="460" height="300"></div>
 <p>Author: {{post?.author}}</p>
 <p>Date: {{post?.dateCreated}}</p>
 <!-- Like Count -->
-<button style="border:none; background: none;" (click)="onClick()">❤</button>
-<p>Likes: {{post?.numberOfLikes}}</p>
+<!-- Like Count -->
+<div class="button-container">
+  <button style="border:none; background: none;" (click)="onClick()">❤</button>
+  <p>Likes: {{post?.numberOfLikes}}</p>
+  <!-- dislike Count -->
+  <button style="border:none; background: none;" (click)="onDislikeClick()">👎</button>
+  <p>Dislikes: {{post?.numberOfDislikes}}</p>
+</div>
 <div class="comment-section">
-    <input type="text" [(ngModel)]="commentText" placeholder="Add a comment">
+    <input type="text" [(ngModel)]="commentText" placeholder="Add a comment"> 
     <button class="btn btn-primary" (click)="addComment(commentText)">Comment</button>
 </div>
 <!-- Display Comment -->
 <div *ngFor="let comment of post?.comments">
     <p>{{comment}}</p>
 </div>
+
 <!-- Buttons Edit and Delete -->
 <button class="btn btn-primary" (click)="onEdit()">Edit</button> -
 <button class="btn btn-danger" (click)="delete()">Delete</button>

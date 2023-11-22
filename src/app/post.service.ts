@@ -47,6 +47,12 @@ export class PostService{
           LikePost(index: number){
           this.listOfPosts[index].numberOfLikes += 1;
           }
+          disLikePost(index: number){
+            if (this.listOfPosts[index].numberOfDislikes === undefined) {
+              this.listOfPosts[index].numberOfDislikes = 0;
+            }
+            this.listOfPosts[index].numberOfDislikes += 1;
+          }  
           addComment(index: number, comment: string){
             if (!Array.isArray(this.listOfPosts[index].comments)) {
               this.listOfPosts[index].comments = [];

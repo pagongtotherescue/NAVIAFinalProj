@@ -15,6 +15,7 @@ export class PostComponent implements OnInit{
   @Input() post?: Post;
   commentText: any;
   isHovered = false;
+  searchText: string = '';
   
   constructor(private postService: PostService, private router: Router, private backEndService: BackEndService) {
 
@@ -31,19 +32,27 @@ export class PostComponent implements OnInit{
   onEdit(){
     this.router.navigate(['/post-edit', this.index]);
   }
-
   onClick(){
     this.postService.LikePost(this.index);
-    this.backEndService.saveData(); // Save the updated post to the database
+    this.backEndService.saveData(); 
   }
-  
-
+  onDislikeClick(){
+  this.postService.disLikePost(this.index);
+  this.backEndService.saveData();
+  }
   addComment(commentText: string){
-    if (commentText.trim() !=='') { // check if comment is empty
+    if (commentText.trim() !=='') { 
       this.postService.addComment(this.index, commentText);
       this.commentText = '';
       this.backEndService.saveData();
     }
   }
-  
+  search() {
+    const filteredPosts = this.postService.getPost().filter(post => 
+        post.title.includes(this.searchText) || 
+        post.description.includes(this.searchText)
+    );
+    console.log(filteredPosts);
 }
+}
+
