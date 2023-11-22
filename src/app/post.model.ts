@@ -7,5 +7,5 @@ export class Post {
         public dateCreated: Date,
         public numberOfLikes: number,
         public comments: string[] = [] ) {
-        }     
+        }    
     }

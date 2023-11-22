@@ -42,6 +42,7 @@ export class PostComponent implements OnInit{
     if (commentText.trim() !=='') { // check if comment is empty
       this.postService.addComment(this.index, commentText);
       this.commentText = '';
+      this.backEndService.saveData();
     }
   }
   
