@@ -15,7 +15,6 @@ export class PostComponent implements OnInit{
   @Input() post?: Post;
   commentText: any;
   isHovered = false;
-  searchText: string = '';
   
   constructor(private postService: PostService, private router: Router, private backEndService: BackEndService) {
 
@@ -47,12 +46,4 @@ export class PostComponent implements OnInit{
       this.backEndService.saveData();
     }
   }
-  search() {
-    const filteredPosts = this.postService.getPost().filter(post => 
-        post.title.includes(this.searchText) || 
-        post.description.includes(this.searchText)
-    );
-    console.log(filteredPosts);
 }
-}
-

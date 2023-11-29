@@ -1,13 +1,11 @@
-/* Adjust h1 styling */
 h1 {
     font-size: 24px;
     font-weight: bold;
     color: #333;
 }
 
-/* Style the image */
 .img-fluid {
-    max-width: 100%;
+    max-width: 50%;
     height: auto;
     display: block;
 }
@@ -19,8 +17,8 @@ button {
 }
 
 .edit-btn {
-    background-color: #007bff; /* Blue color */
-    color: #fff; /* White text */
+    background-color: #007bff;
+    color: #fff; 
     margin-right: 5px;
 }
 
@@ -35,17 +33,51 @@ button {
 }
 
 .comment {
-    background-color: #f5f5f5; /* Light gray background for comments */
+    background-color: #f5f5f5; 
     padding: 10px;
     margin-bottom: 10px;
-    border-radius: 5px; /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+    border-radius: 5px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
 }
 
 .button-container {
     display: flex;
-  } 
+} 
 
-  .button-container button {
+.button-container button {
     margin-right: 10px;
-  }
+    font-size: 24px;
+    transition: color 0.3s ease;
+}
+
+.button-container button:hover {
+    color: #007bff;
+}
+
+/* Style for the comments */
+.comment {
+    background-color: #f5f5f5; /* Light gray background for comments */
+    padding: 5px; /* Reduce padding */
+    margin-bottom: 10px;
+    border-radius: 10px; /* More rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+    font-size: 14px; /* Smaller font size */
+    transition: box-shadow 0.3s ease; /* Smooth transition for box-shadow */
+}
+
+.comment-section {
+    background-color: #f2f2f2;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.comment:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Increase shadow depth when hovering */
+}
+
+.card {
+    margin-bottom: 10px;
+    
+}
