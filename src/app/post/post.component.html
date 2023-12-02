@@ -9,12 +9,17 @@
             <p>Date: {{post?.dateCreated}}</p>
             <!-- Like Count -->
             <div class="button-container">
-                <button style="border:none; background: none;" (click)="onClick()">❤</button>
-                <p>Likes: {{post?.numberOfLikes}}</p>
-                <!-- dislike Count -->
-                <button style="border:none; background: none;" (click)="onDislikeClick()">👎</button>
-                <p>Dislikes: {{post?.numberOfDislikes}}</p>
-            </div>
+                <button class="like-button" (click)="onClick()">
+                    <i class="fa fa-heart"></i>
+                    <span>{{post?.numberOfLikes}}</span>
+                </button>
+    <!-- dislike Count -->
+            <button class="dislike-button" (click)="onDislikeClick()">
+                <i class="fa fa-thumbs-down"></i>
+                <span>{{post?.numberOfDislikes}}</span>
+                </button>
+                </div>
+    <!-- Comment Section -->
             <div class="comment-section">
                 <input type="text" [(ngModel)]="commentText" placeholder="Add a comment"> 
                 <button class="btn btn-primary" (click)="addComment(commentText)">Comment</button>
