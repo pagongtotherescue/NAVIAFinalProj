@@ -3,4 +3,16 @@
     margin-bottom: 20px;
     background: linear-gradient(to right, #0062E6, #33AEFF);
     justify-content: center;
-}
+} button {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #dc3545;
+    color: white;
+    cursor: pointer;
+    margin-left: auto;
+  }
+  
+  button:hover {
+    background-color: #c82333;
+  }

@@ -1,0 +1,5 @@
+<form #registerForm="ngForm" (ngSubmit)="register(registerForm.value.email, registerForm.value.password)">
+  <input type="email" name="email" ngModel placeholder="Email" required>
+  <input type="password" name="password" ngModel placeholder="Password" required minlength="6">
+  <button type="submit" [disabled]="!registerForm.valid">Register</button>
+</form>
