@@ -10,6 +10,7 @@ import { BackEndService } from '../back-end.service';
 })
 export class PostListComponent implements OnInit {
   listOfPosts: Post[] = [];
+  searchTerm: string='';
 
   constructor(
     private postService: PostService,
@@ -23,5 +24,15 @@ export class PostListComponent implements OnInit {
 
     this.backEndService.fetchData().subscribe((newlistofPost: Post[]) => {
     });
+  }
+  get filteredPosts(): Post[] {
+    const filteredPosts = this.listOfPosts.filter((post) =>
+    post.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+    console.log(filteredPosts);
+    return filteredPosts;
+  }
+  logSearchTerm() {
+    console.log(this.searchTerm);
   }
 }
