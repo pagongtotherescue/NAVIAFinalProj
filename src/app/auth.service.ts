@@ -12,6 +12,7 @@ import { finalize } from 'rxjs/operators';
 import { from, mapTo } from 'rxjs';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -54,9 +55,45 @@ export class AuthService {
   getCurrentUser(): Promise<User | null> {
     return firstValueFrom(this.afAuth.user.pipe(defaultIfEmpty(null)));
   }
-  updateUser(userDetails: { displayName?: string, photoURL?: string }) {
+  updateUser(userDetails: { displayName?: string, photoURL?: string, profilePicture?: File }) {
     return this.afAuth.user.pipe(
-      switchMap((user: User | null) => user ? from(user.updateProfile(userDetails)).pipe(mapTo(userDetails)) : of(null))
+      switchMap((user: User | null) => {
+        if (user) {
+          let updatePromise: Promise<void>;
+          if (userDetails.profilePicture) {
+            const filePath = `profilePics/${user.uid}`;
+            const fileRef = this.storage.ref(filePath);
+            const task = this.storage.upload(filePath, userDetails.profilePicture);
+  
+            updatePromise = task.snapshotChanges().pipe(
+              finalize(() => fileRef.getDownloadURL().subscribe((url) => {
+                user.updateProfile({
+                  displayName: userDetails.displayName,
+                  photoURL: url
+                });
+              })),
+              mapTo(void 0)
+            ).toPromise();
+          } else {
+            updatePromise = user.updateProfile({
+              displayName: userDetails.displayName,
+              photoURL: userDetails.photoURL
+            });
+          }
+  
+          return from(updatePromise).pipe(
+            switchMap(() => this.afAuth.currentUser),
+            map((currentUser) => currentUser ? {
+              displayName: currentUser.displayName,
+              photoURL: currentUser.photoURL,
+              email: currentUser.email,
+              uid: currentUser.uid
+            } : null)
+          );
+        } else {
+          return of(null);
+        }
+      })
     );
   }
 }

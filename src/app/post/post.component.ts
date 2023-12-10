@@ -15,6 +15,7 @@ export class PostComponent implements OnInit{
   @Input() post?: Post;
   commentText: any;
   isHovered = false;
+
   
   constructor(private postService: PostService, private router: Router, private backEndService: BackEndService) {
 

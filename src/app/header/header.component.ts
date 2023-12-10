@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BackEndService } from '../back-end.service';
-import { PostService } from '../post.service'; // Import PostService
-import { AuthService } from '../auth.service'; // Import AuthService
-import { Router } from '@angular/router'; // Import Router
+import { PostService } from '../post.service'; 
+import { AuthService } from '../auth.service'; 
+import { Router } from '@angular/router'; 
 import { Observable } from 'rxjs';
 
 @Component({
@@ -12,17 +12,21 @@ import { Observable } from 'rxjs';
 })
 export class HeaderComponent implements OnInit {
   listOfPosts: any;
-  isLoggedIn$!: Observable<boolean>; // Use the "!" post-fix expression to tell TypeScript that this variable will be definitely assigned
+  isLoggedIn$!: Observable<boolean>; 
+  currentUser: any;
 
   constructor(
     private backEndService: BackEndService,
-    private postService: PostService, // Inject PostService
-    private authService: AuthService, // Inject AuthService
-    private router: Router // Inject Router
+    private postService: PostService, 
+    private authService: AuthService, 
+    private router: Router 
   ) {}
 
   ngOnInit() {
     this.isLoggedIn$ = this.authService.isLoggedIn();
+    this.authService.getCurrentUser().then(user => {
+      this.currentUser = user;
+    });
   }
 
   logout() {

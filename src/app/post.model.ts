@@ -7,7 +7,7 @@ export class Post {
         public dateCreated: Date,
         public numberOfLikes: number,
         public numberOfDislikes: number = 0,
-        public comments: string[] = [] ) {
-        
-        }    
-    }
+        public comments: string[] = [],
+        public user: { photoURL: string } = { photoURL: '' } ) {
+    }    
+}

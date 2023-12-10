@@ -1,35 +1,35 @@
-
 <!-- Display Post -->
-    <div class="card">
-        <img class="card-img-top" src="{{post?.imagePath}}" alt="Card image cap">
-        <div class="card-body">
-            <h1 class="card-title">{{post?.title}}</h1>
-            <p class="card-text">{{post?.description}}</p>
-            <p>Author: {{post?.author}}</p>
-            <p>Date: {{post?.dateCreated}}</p>
-            <!-- Like Count -->
-            <div class="button-container">
-                <button class="like-button" (click)="onClick()">
-                    <i class="fa fa-heart"></i>
-                    <span>{{post?.numberOfLikes}}</span>
-                </button>
-    <!-- dislike Count -->
+<div class="card">
+    <img class="card-img-top" src="{{post?.imagePath}}" alt="Card image cap">
+    <div class="card-body">
+        <h1 class="card-title">{{post?.title}}</h1>
+        <p class="card-text">{{post?.description}}</p>
+        <p>Author: {{post?.author}}</p>
+        <img [src]="post?.user?.photoURL" alt="User's profile picture"> <!-- User's profile picture -->
+        <p>Date: {{post?.dateCreated}}</p>
+        <!-- Like Count -->
+        <div class="button-container">
+            <button class="like-button" (click)="onClick()">
+                <i class="fa fa-heart"></i>
+                <span>{{post?.numberOfLikes}}</span>
+            </button>
+            <!-- dislike Count -->
             <button class="dislike-button" (click)="onDislikeClick()">
                 <i class="fa fa-thumbs-down"></i>
                 <span>{{post?.numberOfDislikes}}</span>
-                </button>
-                </div>
-    <!-- Comment Section -->
-            <div class="comment-section">
-                <input type="text" [(ngModel)]="commentText" placeholder="Add a comment"> 
-                <button class="btn btn-primary" (click)="addComment(commentText)">Comment</button>
-            </div>
-            <!-- Display Comment -->
-            <div *ngFor="let comment of post?.comments" class="comment">
-            <p>{{comment}}</p>
-            </div>
-            <!-- Buttons Edit and Delete -->
-            <button class="btn btn-primary" (click)="onEdit()">Edit</button> -
-            <button class="btn btn-danger" (click)="delete()">Delete</button>
+            </button>
         </div>
+        <!-- Comment Section -->
+        <div class="comment-section">
+            <input type="text" [(ngModel)]="commentText" placeholder="Add a comment"> 
+            <button class="btn btn-primary" (click)="addComment(commentText)">Comment</button>
+        </div>
+        <!-- Display Comment -->
+        <div *ngFor="let comment of post?.comments" class="comment">
+            <p>{{comment}}</p>
+        </div>
+        <!-- Buttons Edit and Delete -->
+        <button class="btn btn-primary" (click)="onEdit()">Edit</button> -
+        <button class="btn btn-danger" (click)="delete()">Delete</button>
     </div>
+</div>

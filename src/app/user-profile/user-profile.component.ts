@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -8,17 +9,28 @@ import { AuthService } from '../auth.service';
 })
 export class UserProfileComponent {
   user: any;
+  selectedFile: File | undefined;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
     this.user = this.authService.getCurrentUser();
   }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
   updateProfile(formValues: { name?: string, bio?: string }) {
     this.authService.updateUser({
       displayName: formValues.name,
-      photoURL: formValues.bio
+      photoURL: formValues.bio,
+      profilePicture: this.selectedFile
     })
     .subscribe({
-      next: () => console.log('Profile updated!'),
+      next: (updatedUser) => {
+        console.log('Profile updated!');
+        this.user = updatedUser;
+        this.router.navigate(['/post-list']); 
+      },
       error: (error: any) => console.error(error)
     });
   }

@@ -1,17 +1,22 @@
 <div *ngIf="user">
-    <h2>Email: {{ user.email }}</h2>
-    <h3>Name: {{ user.displayName }}</h3>
-    <p>Bio: {{ user.photoURL }}</p>
-    <p>Role: {{ user.displayName }}</p> <!-- display user role -->
-    <form (ngSubmit)="updateProfile(form.value)" #form="ngForm">
-      <label>
-        Name:
-        <input type="text" [(ngModel)]="user.displayName" name="name" required>
-      </label>
-      <label>
-        Bio:
-        <textarea [(ngModel)]="user.photoURL" name="bio"></textarea>
-      </label>
-      <button type="submit">Update Profile</button>
-    </form>
-  </div>
+  <h2>Email: {{ user.email }}</h2>
+  <h3>Name: {{ user.displayName }}</h3>
+  <p>Bio: {{ user.bio }}</p> <!-- display user bio -->
+  <p>Role: {{ user.role }}</p> <!-- display user role -->
+  <img [src]="user.photoURL" alt="Profile Picture"> <!-- display profile picture -->
+  <form (ngSubmit)="updateProfile(form.value)" #form="ngForm">
+    <label>
+      Name:
+      <input type="text" [(ngModel)]="user.displayName" name="name" required>
+    </label>
+    <label>
+      Bio:
+      <textarea [(ngModel)]="user.bio" name="bio"></textarea>
+    </label>
+    <label>
+      Profile Picture:
+      <input type="file" (change)="onFileSelected($event)" name="profilePicture">
+    </label>
+    <button type="submit">Update Profile</button>
+  </form>
+</div>

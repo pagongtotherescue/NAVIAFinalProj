@@ -23,6 +23,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'post-edit/:index', component: PostEditComponent },
   { path: 'user-profile', component: UserProfileComponent },
+  { path: 'posts/:postId', component: PostComponent },
 ];
 
 @NgModule({
