@@ -26,14 +26,17 @@ export class BackEndService {
   }
 
   fetchData() {
-    return this.http.get<Post[]>('https://crud-e46d7-default-rtdb.asia-southeast1.firebasedatabase.app/post.json')
+    return this.http.get('https://crud-e46d7-default-rtdb.asia-southeast1.firebasedatabase.app/post.json')
       .pipe(
-        tap((newlistofPost: Post[]) => {
-          if (newlistofPost) {
-            console.log(newlistofPost);
+        tap((data: any) => {
+          console.log('Raw data:', data); 
+          let newlistofPost: Post[] = [];
+          if (Array.isArray(data)) {
+            newlistofPost = data as Post[];
+            console.log('Received data:', newlistofPost);
             this.postService.setPosts(newlistofPost);
           } else {
-            console.error('No data received or data is null.');
+            console.error('No data received or data is not an array.');
           }
         }),
         catchError((error) => {

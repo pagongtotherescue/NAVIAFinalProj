@@ -1,23 +1,31 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { map } from 'rxjs/operators';
-import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { map, switchMap, finalize, mapTo, defaultIfEmpty } from 'rxjs/operators';
+import { of, from, firstValueFrom } from 'rxjs';
 import firebase from 'firebase/compat/app';
-type User = firebase.User;
-import { defaultIfEmpty } from 'rxjs/operators';
-import { firstValueFrom } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { finalize } from 'rxjs/operators';
-import { from, mapTo } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
+type User = firebase.User;
+type UserProfile = User & {
+  displayName?: string | null;
+  photoURL?: string | null;
+  coverURL?: string | null;  
+  bio?: string;
+};
 
+interface UserData {
+  displayName?: string;
+  photoURL?: string;
+  coverURL?: string;  
+  bio?: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private afAuth: AngularFireAuth, private storage: AngularFireStorage) { }
+  constructor(private afAuth: AngularFireAuth, private storage: AngularFireStorage, private db: AngularFirestore) { }
 
   login(email: string, password: string) {
     return this.afAuth.signInWithEmailAndPassword(email, password);
@@ -52,10 +60,26 @@ export class AuthService {
   isLoggedIn() {
     return this.afAuth.authState.pipe(map(user => !!user));
   }
-  getCurrentUser(): Promise<User | null> {
-    return firstValueFrom(this.afAuth.user.pipe(defaultIfEmpty(null)));
+
+  async getCurrentUser(): Promise<UserProfile | null> {
+    const user = await firstValueFrom(this.afAuth.user.pipe(defaultIfEmpty(null)));
+    if (user) {
+      const doc = await this.db.collection('users').doc(user.uid).get().toPromise();
+      if (doc && doc.exists) {
+        const data = doc.data() as UserData;
+        return {
+          ...user,
+          displayName: data.displayName || null,
+          photoURL: data.photoURL || null,
+          coverURL: data.coverURL || null,  
+          bio: data.bio || undefined
+        };
+      }
+    }
+    return user;
   }
-  updateUser(userDetails: { displayName?: string, photoURL?: string, profilePicture?: File }) {
+
+  updateUser(userDetails: { displayName?: string, photoURL?: string, profilePicture?: File, coverPicture?: File, bio?: string }) {
     return this.afAuth.user.pipe(
       switchMap((user: User | null) => {
         if (user) {
@@ -81,19 +105,67 @@ export class AuthService {
             });
           }
   
-          return from(updatePromise).pipe(
-            switchMap(() => this.afAuth.currentUser),
-            map((currentUser) => currentUser ? {
-              displayName: currentUser.displayName,
-              photoURL: currentUser.photoURL,
-              email: currentUser.email,
-              uid: currentUser.uid
-            } : null)
-          );
-        } else {
-          return of(null);
-        }
-      })
-    );
-  }
+          // Handle cover photo upload here
+          if (userDetails.coverPicture) {
+            const coverFilePath = `coverPics/${user.uid}`;
+            const coverFileRef = this.storage.ref(coverFilePath);
+            const coverTask = this.storage.upload(coverFilePath, userDetails.coverPicture);
+  
+            coverTask.snapshotChanges().pipe(
+              finalize(() => coverFileRef.getDownloadURL().subscribe((url) => {
+                // Save the cover photo URL to Firestore
+                this.db.collection('users').doc(user.uid).update({ coverURL: url });
+              }))
+            ).subscribe();
+          }
+  
+          // Handle profile picture upload here
+if (userDetails.profilePicture) {
+  const filePath = `profilePics/${user.uid}`;
+  const fileRef = this.storage.ref(filePath);
+  const task = this.storage.upload(filePath, userDetails.profilePicture);
+
+  task.snapshotChanges().pipe(
+    finalize(() => fileRef.getDownloadURL().subscribe((url) => {
+      // Save the profile photo URL to Firestore
+      this.db.collection('users').doc(user.uid).update({ photoURL: url });
+    }))
+  ).subscribe();
+}
+
+        // Save displayName, photoURL, and bio to Firestore
+if (userDetails.displayName || userDetails.photoURL || userDetails.bio) {
+  const userDoc = this.db.collection('users').doc(user.uid);
+  userDoc.get().toPromise().then((docSnapshot) => {
+    if (docSnapshot && docSnapshot.exists) {
+      const updateData: UserData = {};
+      if (userDetails.displayName) updateData.displayName = userDetails.displayName;
+      if (userDetails.photoURL) updateData.photoURL = userDetails.photoURL;
+      if (userDetails.bio) updateData.bio = userDetails.bio;
+      userDoc.update(updateData);
+    } else {
+      const setData: UserData = {};
+      if (userDetails.displayName) setData.displayName = userDetails.displayName;
+      if (userDetails.photoURL) setData.photoURL = userDetails.photoURL;
+      if (userDetails.bio) setData.bio = userDetails.bio;
+      userDoc.set(setData);
+    }
+  });
+}
+
+        return from(updatePromise).pipe(
+          switchMap(() => this.afAuth.currentUser),
+          map((currentUser) => currentUser ? {
+            displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL,
+            email: currentUser.email,
+            uid: currentUser.uid
+          } : null)
+        );
+      } else {
+        return of(null);
+      }
+    })
+  );
+}
 }

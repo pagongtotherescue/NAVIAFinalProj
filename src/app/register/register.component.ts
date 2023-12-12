@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
 
-
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -18,7 +17,12 @@ export class RegisterComponent {
   
     this.authService.register(email, password, profilePic)
       .then(() => console.log('Registered!'))
-      .catch(error => console.error(error));
+      .catch((error) => {
+        if (error.code === 'auth/email-already-in-use') {
+          window.alert('The email address is already in use by another account.');
+        } else {
+          console.error(error);
+        }
+      });
   }
-
 }

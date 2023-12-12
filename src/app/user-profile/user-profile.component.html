@@ -1,9 +1,12 @@
 <div *ngIf="user">
-  <h2>Email: {{ user.email }}</h2>
+  <div class="profile-header">
+    <img [src]="user.coverURL" alt="Cover Photo" class="cover-photo">
+    <div class="profile-photo-container">
+      <img [src]="user.photoURL" alt="Profile Picture" class="profile-photo">
+    </div>
+  </div>
   <h3>Name: {{ user.displayName }}</h3>
   <p>Bio: {{ user.bio }}</p> <!-- display user bio -->
-  <p>Role: {{ user.role }}</p> <!-- display user role -->
-  <img [src]="user.photoURL" alt="Profile Picture"> <!-- display profile picture -->
   <form (ngSubmit)="updateProfile(form.value)" #form="ngForm">
     <label>
       Name:
@@ -16,6 +19,10 @@
     <label>
       Profile Picture:
       <input type="file" (change)="onFileSelected($event)" name="profilePicture">
+    </label>
+    <label>
+      Cover Photo:
+      <input type="file" (change)="onCoverFileSelected($event)" name="coverPicture">
     </label>
     <button type="submit">Update Profile</button>
   </form>
