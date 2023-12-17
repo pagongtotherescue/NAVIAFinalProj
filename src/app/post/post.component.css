@@ -118,3 +118,13 @@ button {
 .dislike-button .fa-thumbs-down:hover {
     transform: scale(1.3);
 }
+.link-button {
+    color: #385898; /* Facebook's blue color */
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .link-button:hover {
+    text-decoration: underline;
+  }

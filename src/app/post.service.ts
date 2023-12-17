@@ -1,6 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Post } from './post.model';
 
+
 @Injectable({ providedIn: 'root' })
 export class PostService{
 
@@ -62,5 +63,14 @@ export class PostService{
             setPosts(newlistofPost: Post[]) {
             this.listOfPosts = newlistofPost;
             this.listChangeEvent.emit(newlistofPost);
+            }
+            editComment(postIndex: number, commentIndex: number, newCommentText: string) {
+              this.listOfPosts[postIndex].comments[commentIndex] = newCommentText;
+              this.listChangeEvent.emit(this.listOfPosts);
+            }
+            
+            deleteComment(postIndex: number, commentIndex: number) {
+              this.listOfPosts[postIndex].comments.splice(commentIndex, 1);
+              this.listChangeEvent.emit(this.listOfPosts);
             }
             }

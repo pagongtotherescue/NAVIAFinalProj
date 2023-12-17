@@ -1,29 +1,35 @@
-<div *ngIf="user">
-  <div class="profile-header">
-    <img [src]="user.coverURL" alt="Cover Photo" class="cover-photo">
-    <div class="profile-photo-container">
-      <img [src]="user.photoURL" alt="Profile Picture" class="profile-photo">
+<div class="container profile-container" *ngIf="user">
+  <div class="row">
+    <div class="col-12">
+      <img [src]="user.coverURL" class="img-fluid cover-photo" alt="Cover Photo">
     </div>
+    <div class="col-12 text-center">
+      <img [src]="user.photoURL" class="rounded-circle img-thumbnail profile-picture" alt="Profile Picture">
+    </div>
+    <div class="row">
+      <div class="col-12 text-center">
+        <h1 class="display-name">{{ user.displayName }}</h1>
+        <p class="bio">{{ user.bio }}</p>
+      </div>
+    </div>
+    <form (ngSubmit)="updateProfile(form.value)" #form="ngForm" class="profile-form">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" [(ngModel)]="user.displayName" name="name" required class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="bio">Bio:</label>
+        <textarea id="bio" [(ngModel)]="user.bio" name="bio" class="form-control"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="profilePicture">Profile Picture:</label>
+        <input type="file" id="profilePicture" (change)="onFileSelected($event)" name="profilePicture" class="form-control-file">
+      </div>
+      <div class="form-group">
+        <label for="coverPicture">Cover Photo:</label>
+        <input type="file" id="coverPicture" (change)="onCoverFileSelected($event)" name="coverPicture" class="form-control-file">
+      </div>
+      <button type="submit" class="btn btn-primary update-button">Update Profile</button>
+    </form>
   </div>
-  <h3>Name: {{ user.displayName }}</h3>
-  <p>Bio: {{ user.bio }}</p> <!-- display user bio -->
-  <form (ngSubmit)="updateProfile(form.value)" #form="ngForm">
-    <label>
-      Name:
-      <input type="text" [(ngModel)]="user.displayName" name="name" required>
-    </label>
-    <label>
-      Bio:
-      <textarea [(ngModel)]="user.bio" name="bio"></textarea>
-    </label>
-    <label>
-      Profile Picture:
-      <input type="file" (change)="onFileSelected($event)" name="profilePicture">
-    </label>
-    <label>
-      Cover Photo:
-      <input type="file" (change)="onCoverFileSelected($event)" name="coverPicture">
-    </label>
-    <button type="submit">Update Profile</button>
-  </form>
 </div>

@@ -1,6 +1,9 @@
-<form #loginForm="ngForm" (ngSubmit)="login(loginForm.value.email, loginForm.value.password)">
-  <input type="email" name="email" ngModel placeholder="Email">
-  <input type="password" name="password" ngModel placeholder="Password">
-  <button type="submit">Login</button>
-  <p>Don't have an account? <a routerLink="/register">Click here to sign up</a></p>
-</form>
+<div class="login-container">
+  <form #loginForm="ngForm" (ngSubmit)="login(loginForm.value.email, loginForm.value.password)" class="login-form">
+    <h1 class="form-title">Login</h1>
+    <input type="email" name="email" ngModel placeholder="Email" class="form-input">
+    <input type="password" name="password" ngModel placeholder="Password" class="form-input">
+    <button type="submit" class="form-button">Login</button>
+    <p class="form-text">Don't have an account? <a routerLink="/register" class="form-link">Click here to sign up</a></p>
+  </form>
+</div>

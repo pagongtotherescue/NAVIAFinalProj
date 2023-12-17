@@ -24,7 +24,7 @@ export class UserProfileComponent implements OnInit {
     this.selectedFile = event.target.files[0];
   }
 
-  onCoverFileSelected(event: any) { // add this method
+  onCoverFileSelected(event: any) { 
     this.coverSelectedFile = event.target.files[0];
   }
 
@@ -40,6 +40,7 @@ export class UserProfileComponent implements OnInit {
         console.log('Profile updated!');
         this.user = updatedUser;
         this.router.navigate(['/post-list']); 
+        window.alert('Profile updated successfully!');
       },
       error: (error: any) => console.error(error)
     });

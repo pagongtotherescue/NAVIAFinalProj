@@ -25,9 +25,17 @@
             <button class="btn btn-primary" (click)="addComment(commentText)">Comment</button>
         </div>
         <!-- Display Comment -->
-        <div *ngFor="let comment of post?.comments" class="comment">
-            <p>{{comment}}</p>
-        </div>
+<!-- Display Comment -->
+<div *ngFor="let comment of post?.comments; let i = index" class="comment">
+    <ng-container *ngIf="i !== editingCommentIndex; else editingComment">
+      <p>{{comment}}</p>
+      <button class="link-button" (click)="startEditingComment(i, comment)">Edit</button> |
+      <button class="link-button" (click)="deleteComment(i)">Delete</button>
+    </ng-container>
+    <ng-template #editingComment>
+      <input [(ngModel)]="editingCommentText" (keydown.enter)="saveEditedComment(i)">
+    </ng-template>
+  </div>
         <!-- Buttons Edit and Delete -->
         <button class="btn btn-primary" (click)="onEdit()">Edit</button> -
         <button class="btn btn-danger" (click)="delete()">Delete</button>

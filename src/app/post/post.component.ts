@@ -15,18 +15,17 @@ export class PostComponent implements OnInit{
   @Input() post?: Post;
   commentText: any;
   isHovered = false;
+  editingCommentIndex: number | null = null;
+  editingCommentText: string = '';
 
-  
-  constructor(private postService: PostService, private router: Router, private backEndService: BackEndService) {
-
-   }
+  constructor(private postService: PostService, private router: Router, private backEndService: BackEndService) {}
 
   ngOnInit(): void {
     console.log(this.post)
   }
   delete(){
     this.postService.deleteButton(this.index);
-    this.backEndService.saveData(); // Save the updated post to the database
+    this.backEndService.saveData(); 
   }
 
   onEdit(){
@@ -46,5 +45,20 @@ export class PostComponent implements OnInit{
       this.commentText = '';
       this.backEndService.saveData();
     }
+  }
+  startEditingComment(index: number, comment: string) {
+    this.editingCommentIndex = index;
+    this.editingCommentText = comment;
+  }
+
+  saveEditedComment(index: number) {
+    this.postService.editComment(this.index, index, this.editingCommentText);
+    this.editingCommentIndex = null;
+    this.backEndService.saveData();
+  }
+
+  deleteComment(index: number) {
+    this.postService.deleteComment(this.index, index);
+    this.backEndService.saveData();
   }
 }
