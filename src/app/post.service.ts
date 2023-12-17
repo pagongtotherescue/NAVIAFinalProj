@@ -1,9 +1,11 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Post } from './post.model';
-
+import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class PostService{
+
+  constructor(private authService: AuthService) { }
 
   listChangeEvent: EventEmitter<Post[]>  = new EventEmitter();
     listOfPosts: Post[] = [
@@ -25,14 +27,17 @@ export class PostService{
         //   ),
     
         ];
-        addPost(post: Post) {
+        async addPost(post: Post) {
+          const currentUser = await this.authService.getCurrentUser();
+          post.author = currentUser?.displayName || 'Anonymous'; // Modified line
+        
           if (this.listOfPosts === null) {
             this.listOfPosts = []; // Initialize the array if it's null
           }
           this.listOfPosts.push(post);
           this.listChangeEvent.emit(this.listOfPosts);
         }
-
+      
         getPost(){
           return this.listOfPosts;
         }
