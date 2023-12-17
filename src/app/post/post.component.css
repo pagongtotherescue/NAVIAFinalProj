@@ -4,12 +4,6 @@ h1 {
     color: #333;
 }
 
-.img-fluid {
-    max-width: 50%;
-    height: auto;
-    display: block;
-}
-
 /* Buttons */
 button {
     cursor: pointer;
