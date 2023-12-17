@@ -35,23 +35,54 @@ export class AuthService {
     return this.afAuth.signOut();
   }
 
-  register(email: string, password: string, profilePic: any) {
+  register(email: string, password: string, name: string, profilePic: any, coverPic: any) {
     return this.afAuth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        if (result.user && profilePic) {
-          const filePath = `profilePics/${result.user.uid}`;
-          const fileRef = this.storage.ref(filePath);
-          const task = this.storage.upload(filePath, profilePic);
+        if (result.user) {
+          // Update the user profile with the name
+          result.user.updateProfile({
+            displayName: name
+          });
   
-          task.snapshotChanges().pipe(
-            finalize(() => fileRef.getDownloadURL().subscribe((url) => {
-              if (result.user) {
-                result.user.updateProfile({
-                  photoURL: url
-                });
-              }
-            }))
-          ).subscribe();
+          // Upload the profile picture
+          if (profilePic) {
+            const profilePicPath = `profilePics/${result.user.uid}`;
+            const profilePicRef = this.storage.ref(profilePicPath);
+            const profilePicTask = this.storage.upload(profilePicPath, profilePic);
+  
+            profilePicTask.snapshotChanges().pipe(
+              finalize(() => profilePicRef.getDownloadURL().subscribe((url) => {
+                if (result.user) {
+                  result.user.updateProfile({
+                    photoURL: url
+                  });
+                }
+              }))
+            ).subscribe();
+          }
+  
+          // Upload the cover picture
+          if (coverPic) {
+            const coverPicPath = `coverPics/${result.user.uid}`;
+            const coverPicRef = this.storage.ref(coverPicPath);
+            const coverPicTask = this.storage.upload(coverPicPath, coverPic);
+  
+            coverPicTask.snapshotChanges().pipe(
+              finalize(() => coverPicRef.getDownloadURL().subscribe((url) => {
+                // Save the cover photo URL to Firestore
+                if (result.user) {
+                  const userDoc = this.db.collection('users').doc(result.user.uid);
+                  userDoc.get().toPromise().then((docSnapshot) => {
+                    if (docSnapshot && docSnapshot.exists) {
+                      userDoc.update({ coverURL: url });
+                    } else {
+                      userDoc.set({ coverURL: url });
+                    }
+                  });
+                }
+              }))
+            ).subscribe();
+          }
         }
         return result;
       });

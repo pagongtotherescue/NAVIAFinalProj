@@ -9,13 +9,13 @@ import { AuthService } from '../auth.service';
 export class RegisterComponent {
   constructor(private authService: AuthService) { }
 
-  register(email: string, password: string, profilePic: any) {
+  register(email: string, password: string, name: string, profilePic: any, coverPic: any) {
     if (password.length < 6) {
       console.error('Password should be at least 6 characters');
       return;
     }
   
-    this.authService.register(email, password, profilePic)
+    this.authService.register(email, password, name, profilePic, coverPic)
       .then(() => console.log('Registered!'))
       .catch((error) => {
         if (error.code === 'auth/email-already-in-use') {

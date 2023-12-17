@@ -1,9 +1,15 @@
-<form #registerForm="ngForm" (ngSubmit)="register(registerForm.value.email, registerForm.value.password, profilePic)" class="register-form">
+<form #registerForm="ngForm" (ngSubmit)="register(registerForm.value.email, registerForm.value.password, registerForm.value.name, profilePic, coverPic)" class="register-form">
+  <h2>Please Register</h2>
+  <input type="text" name="name" ngModel placeholder="Name" required class="form-input">
   <input type="email" name="email" ngModel placeholder="Email" required class="form-input">
   <input type="password" name="password" ngModel placeholder="Password" required minlength="6" class="form-input">
   <label for="profilePic">
     Select Profile Picture
     <input type="file" id="profilePic" #profilePic="ngModel" name="profilePic" ngModel />
+  </label>
+  <label for="coverPic">
+    Select Cover Picture
+    <input type="file" id="coverPic" #coverPic="ngModel" name="coverPic" ngModel />
   </label>
   <button type="submit" [disabled]="!registerForm.valid" class="submit-button">Register</button>
 </form>
